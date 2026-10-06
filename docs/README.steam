@@ -1,0 +1,91 @@
+[h1]Dock Queue Indicator[/h1]
+
+Shows how many ships are waiting for a free dock at each of your stations, right in the map's Property Owned list. If you never see it, your stations are doing fine.
+
+[h2][b]Features[/b][/h2]
+[list]
+[*] A queue icon with the number of waiting ships appears on every station row of the Property Owned list, first in the row, before the docked-ships icon.
+[*] The number is green, yellow or red depending on the queue size; both thresholds are set in Extension Options.
+[*] Hovering over the icon lists the waiting ships by name.
+[*] Counts every ship that was put into the station's docking queue, your own and NPC traders alike, and drops it again as soon as it gets a dock, docks, gives up or is destroyed.
+[*] Can be switched off in Extension Options without removing the mod.
+[/list]
+[h2][b]Limitations[/b][/h2]
+[list]
+[*] The list has room for five icons per row. A station that already shows five ship classes collapses the last one into "..." when the queue icon is added, exactly as the game does for a sixth class.
+[*] Ships already waiting when the mod is first loaded are picked up only when they request docking again.
+[/list]
+[h2][b]Requirements[/b][/h2]
+[list]
+[*] [b]X4: Foundations[/b]: Version [b]8.00HF4[/b] or higher and [b]UI Extensions and HUD[/b]: Version [b]v8.0.4.10[/b] or higher by [url=https://next.nexusmods.com/profile/kuertee?gameId=2659]kuertee[/url].
+[list]
+[*] Available on Nexus Mods: [url=https://www.nexusmods.com/x4foundations/mods/552]UI Extensions and HUD[/url]
+[/list]
+[*] [b]X4: Foundations[/b]: Version [b]9.00[/b] or higher and [b]UI Extensions and HUD[/b]: Version [b]v9.0.0.7[/b] or higher by [url=https://next.nexusmods.com/profile/kuertee?gameId=2659]kuertee[/url].
+[list]
+[*] Available on Nexus Mods: [url=https://www.nexusmods.com/x4foundations/mods/552]UI Extensions and HUD[/url]
+[/list]
+[*] [b]Mod Support APIs[/b]: Version [b]1.95[/b] or higher by [url=https://next.nexusmods.com/profile/sirnukes?gameId=2659]SirNukes[/url].
+[list]
+[*] Available on Steam: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=2042901274]SirNukes Mod Support APIs[/url]
+[*] Available on Nexus Mods: [url=https://www.nexusmods.com/x4foundations/mods/503]Mod Support APIs[/url]
+[/list]
+[*] [b]Options Helper[/b]: Version [b]1.10[/b] or higher by [url=https://next.nexusmods.com/profile/ChemODun/mods?gameId=2659]Chem O`Dun[/url].
+[list]
+[*] Available on Steam: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3715253556]Options Helper[/url]
+[*] Available on Nexus Mods: [url=https://www.nexusmods.com/x4foundations/mods/2155]Options Helper[/url]
+[/list]
+[*] [b]Print Extension List[/b]: Version [b]1.00[/b] or higher by [url=https://next.nexusmods.com/profile/ChemODun/mods?gameId=2659]Chem O`Dun[/url].
+[list]
+[*] Available on Steam: [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3770927339]Print Extension List[/url]
+[*] Available on Nexus Mods: [url=https://www.nexusmods.com/x4foundations/mods/2191]Print Extension List[/url]
+[/list]
+[/list]
+[h2][b]Installation[/b][/h2]
+
+You can download the latest version via Steam client - [url=https://steamcommunity.com/sharedfiles/filedetails/?id=3814885746]Dock Queue Indicator[/url]
+Or you can do it via the Nexus Mods - [url=https://www.nexusmods.com/x4foundations/mods/2430]Dock Queue Indicator[/url]
+
+[h2][b]Save state[/b][/h2]
+
+[b]No[/b] (removing the extension does not break saves).
+
+[h2][b]Usage[/b][/h2]
+
+Open the map and the Property Owned list. Every station with ships waiting for a dock shows the queue icon with the count as the first icon of its row, before the docked-ships icon.
+
+[img]https://raw.githubusercontent.com/chemodun/X4-DockQueueIndicator/refs/heads/main/docs/images/stations_tab.png[/img]
+
+Hover over the icon to see which ships are waiting.
+
+[img]https://raw.githubusercontent.com/chemodun/X4-DockQueueIndicator/refs/heads/main/docs/images/hover_queue.png[/img]
+
+In Extension Options, under Dock Queue Indicator:
+[list]
+[*] [b]Show the dock queue size on station rows[/b] switches the icon on and off.
+[*] [b]Green up to[/b] is the largest queue still shown in green.
+[*] [b]Yellow up to[/b] is the largest queue shown in yellow; anything above is red.
+[*] [b]Debug Level[/b] controls how much the mod writes to the game log.
+[/list]
+[img]https://raw.githubusercontent.com/chemodun/X4-DockQueueIndicator/refs/heads/main/docs/images/options.png[/img]
+
+[h2][b]Credits[/b][/h2]
+[list]
+[*] Author: Chem O`Dun, on [url=https://next.nexusmods.com/profile/ChemODun/mods?gameId=2659]Nexus Mods[/url] and [url=https://steamcommunity.com/id/chemodun/myworkshopfiles/?appid=392160]Steam Workshop[/url]
+[*] [i]"X4: Foundations"[/i] is a trademark of [url=https://www.egosoft.com]Egosoft[/url].
+[/list]
+[h2][b]Acknowledgements[/b][/h2]
+[list]
+[*] [url=https://www.egosoft.com]EGOSOFT[/url] for the X series.
+[*] [url=https://next.nexusmods.com/profile/kuertee?gameId=2659]kuertee[/url] for UI Extensions and HUD, which provides the map list hooks.
+[*] [url=https://next.nexusmods.com/profile/sirnukes?gameId=2659]SirNukes[/url] for the Mod Support APIs.
+[/list]
+[h2][b]Changelog[/b][/h2]
+
+[h2][1.00] - 2026-10-06[/h2]
+[list]
+[*] Added
+[list]
+[*] Initial public version
+[/list]
+[/list]

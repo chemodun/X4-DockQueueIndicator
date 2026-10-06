@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<content
+  id="ws_3814885746"
+  name="Dock Queue Indicator"
+  author="Chem O`Dun"
+  version="100"
+  date="2026-10-06"
+  save="false"
+  lastupdate="1791320468"
+  description="Shows how many ships are waiting for a free dock at each of your stations, as a coloured icon in the map's Property Owned list. If you never see it, your stations are doing fine. Thresholds for green, yellow and red are set in Extension Options.">
+  <text language="7"
+    description="Shows how many ships are waiting for a free dock at each of your stations, as a coloured icon in the map's Property Owned list. If you never see it, your stations are doing fine. Thresholds for green, yellow and red are set in Extension Options."></text>
+  <!-- French -->
+  <text language="33"
+    description="Affiche le nombre de vaisseaux en attente d'un emplacement d'amarrage libre à chacune de vos stations, sous la forme d'une icône colorée dans la liste Propriétés possédées de la carte. Si vous ne la voyez jamais, vos stations se portent bien. Les seuils du vert, du jaune et du rouge se règlent dans les options des extensions."></text>
+  <!-- Spanish -->
+  <text language="34"
+    description="Muestra cuántas naves esperan un muelle libre en cada una de tus estaciones, como un icono de color en la lista Propiedad Adquirida del mapa. Si nunca lo ves, tus estaciones van bien. Los umbrales de verde, amarillo y rojo se ajustan en las opciones de extensiones."></text>
+  <!-- Italian -->
+  <text language="39"
+    description="Mostra quante navi sono in attesa di un attracco libero in ciascuna delle tue stazioni, come icona colorata nell'elenco Proprietà Posseduta della mappa. Se non la vedi mai, le tue stazioni stanno bene. Le soglie per verde, giallo e rosso si impostano nelle opzioni delle estensioni."></text>
+  <!-- Czech -->
+  <text language="42"
+    description="Zobrazuje, kolik lodí čeká na volný dok u každé z vašich stanic, jako barevnou ikonu v seznamu Vlastnictví hráče na mapě. Pokud ji nikdy neuvidíte, vaše stanice jsou v pořádku. Prahy pro zelenou, žlutou a červenou se nastavují v možnostech rozšíření."></text>
+  <!-- English -->
+  <text language="44"
+    description="Shows how many ships are waiting for a free dock at each of your stations, as a coloured icon in the map's Property Owned list. If you never see it, your stations are doing fine. Thresholds for green, yellow and red are set in Extension Options."></text>
+  <!-- Polish -->
+  <text language="48"
+    description="Pokazuje, ile statków czeka na wolny dok w każdej z twoich stacji, jako kolorową ikonę na liście Posiadane obiekty na mapie. Jeśli nigdy jej nie widzisz, twoje stacje mają się dobrze. Progi dla koloru zielonego, żółtego i czerwonego ustawia się w opcjach rozszerzeń."></text>
+  <!-- German -->
+  <text language="49"
+    description="Zeigt als farbiges Symbol in der Liste „Mein Besitz“ der Karte, wie viele Schiffe an jeder deiner Stationen auf ein freies Dock warten. Siehst du es nie, läuft auf deinen Stationen alles rund. Die Schwellen für Grün, Gelb und Rot legst du in den Erweiterungsoptionen fest."></text>
+  <!-- Portuguese -->
+  <text language="55"
+    description="Mostra quantas naves aguardam uma doca livre em cada uma das suas estações, como um ícone colorido na lista Propriedade Possuída do mapa. Se você nunca o vir, suas estações estão bem. Os limites de verde, amarelo e vermelho são definidos nas opções de extensões."></text>
+  <!-- Japanese -->
+  <text language="81"
+    description="各ステーションで空きドックを待っている艦船の数を、マップの所有資産リストに色付きアイコンで表示します。アイコンが見えなければ、ステーションは順調です。緑・黄・赤のしきい値は拡張機能オプションで設定できます。"></text>
+  <!-- Korean -->
+  <text language="82"
+    description="각 스테이션에서 빈 도킹 공간을 기다리는 함선 수를 지도의 소유자산 목록에 색상 아이콘으로 표시합니다. 아이콘이 보이지 않는다면 스테이션은 잘 돌아가고 있습니다. 초록, 노랑, 빨강의 기준값은 확장 옵션에서 설정합니다."></text>
+  <!-- Chinese Simplified -->
+  <text language="86"
+    description="在地图的现有资产列表中，以彩色图标显示每个空间站有多少飞船正在等待空闲泊位。如果你从未看到它，说明你的空间站运转良好。绿色、黄色和红色的阈值可在扩展选项中设置。"></text>
+  <!-- Chinese Traditional -->
+  <text language="88"
+    description="在地圖的「現有資產」列表中以彩色圖示顯示每個空間站有多少艘飛船正在等待空閒停靠位。如果你從未看到它，表示你的空間站運作良好。綠色、黃色和紅色的門檻可在擴充選項中設定。"></text>
+  <!-- Turkish -->
+  <text language="90"
+    description="Her istasyonunuzda boş bir dok için kaç geminin beklediğini, haritanın Sahip Olunanlar listesinde renkli bir simge olarak gösterir. Onu hiç görmüyorsanız istasyonlarınız iyi durumda demektir. Yeşil, sarı ve kırmızı eşikleri eklenti seçeneklerinden ayarlanır."></text>
+  <!-- Bulgarian -->
+  <text language="359"
+    description="Показва колко кораба чакат свободен док на всяка от вашите станции като цветна икона в списъка „Притежавана собственост“ на картата. Ако никога не я виждате, станциите ви са наред. Праговете за зелено, жълто и червено се задават в опциите на разширенията."></text>
+  <!-- Ukrainian -->
+  <text language="380"
+    description="Показує, скільки кораблів чекають на вільний док на кожній з ваших станцій, у вигляді кольорової піктограми у списку «Власність» на карті. Якщо ви її ніколи не бачите, з вашими станціями все гаразд. Пороги для зеленого, жовтого та червоного задаються в параметрах розширень."></text>
+  <dependency version="800"></dependency>
+  <dependency id="kuerteeUIExtensionsAndHUD" optional="false" name="kuertee UI Extensions and HUD" version="804"></dependency>
+  <dependency id="ws_2042901274" optional="false" name="SirNukes Mod Support APIs" version="195"></dependency>
+  <dependency id="ws_3715253556" optional="false" name="Options Helper" version="110"></dependency>
+  <dependency id="ws_3770927339" optional="false" name="Print Extension List" version="100"></dependency>
+</content>

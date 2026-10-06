@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- English -->
+<diff>
+  <add sel="/language">
+    <page id="1972092443" title="Dock Queue Indicator" descr="Dock Queue Indicator texts" voice="no">
+      <t id="1">Dock Queue Indicator</t>
+      <t id="2">Shows how many ships are waiting for a free dock at each of your stations, as a coloured icon in the map's Property Owned list.</t>
+
+      <!-- Section: Dock queue (90100) -->
+      <t id="90100">Dock queue</t>
+      <t id="90110">Show the dock queue size on station rows</t>
+      <t id="90120">Green up to \(ships waiting\)</t>
+      <t id="90121">Yellow up to \(ships waiting, red above\)</t>
+
+      <!-- Messages (1000+) -->
+      <t id="1000">Waiting for a dock: %s</t>
+
+      <!-- Section: Debug (90900) -->
+      <t id="90900">Debug</t>
+      <t id="90910">Debug Level</t>
+      <t id="90911">None</t>
+      <t id="90912">Debug</t>
+      <t id="90913">Trace</t>
+    </page>
+  </add>
+</diff>

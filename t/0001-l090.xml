@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Turkish -->
+<diff>
+  <add sel="/language">
+    <page id="1972092443" title="Dock Queue Indicator" descr="Dock Queue Indicator texts" voice="no">
+      <t id="1">Dok Kuyruğu Göstergesi</t>
+      <t id="2">Her istasyonunuzda boş bir dok için kaç geminin beklediğini, haritanın Sahip Olunanlar listesinde renkli bir simge olarak gösterir.</t>
+
+      <!-- Section: Dock queue (90100) -->
+      <t id="90100">Dok kuyruğu</t>
+      <t id="90110">İstasyon satırlarında dok kuyruğu boyutunu göster</t>
+      <t id="90120">Yeşil üst sınır \(bekleyen gemi\)</t>
+      <t id="90121">Sarı üst sınır \(bekleyen gemi, üzeri kırmızı\)</t>
+
+      <!-- Messages (1000+) -->
+      <t id="1000">Dok için bekleyen: %s</t>
+
+      <!-- Section: Debug (90900) -->
+      <t id="90900">Hata Ayıklama</t>
+      <t id="90910">Hata Ayıklama Seviyesi</t>
+      <t id="90911">Yok</t>
+      <t id="90912">Hata Ayıklama</t>
+      <t id="90913">İzleme</t>
+    </page>
+  </add>
+</diff>

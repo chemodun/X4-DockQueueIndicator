@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Chinese Simplified -->
+<diff>
+  <add sel="/language">
+    <page id="1972092443" title="Dock Queue Indicator" descr="Dock Queue Indicator texts" voice="no">
+      <t id="1">Dock Queue Indicator</t>
+      <t id="2">在地图的现有资产列表中，以彩色图标显示每个空间站有多少飞船正在等待空闲泊位。</t>
+
+      <!-- Section: Dock queue (90100) -->
+      <t id="90100">泊位队列</t>
+      <t id="90110">在空间站行显示泊位队列数量</t>
+      <t id="90120">绿色上限 \(等待飞船数\)</t>
+      <t id="90121">黄色上限 \(等待飞船数，超过则为红色\)</t>
+
+      <!-- Messages (1000+) -->
+      <t id="1000">正在等待泊位: %s</t>
+
+      <!-- Section: Debug (90900) -->
+      <t id="90900">调试</t>
+      <t id="90910">调试级别</t>
+      <t id="90911">无</t>
+      <t id="90912">调试</t>
+      <t id="90913">跟踪</t>
+    </page>
+  </add>
+</diff>

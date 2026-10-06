@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- French -->
+<diff>
+  <add sel="/language">
+    <page id="1972092443" title="Dock Queue Indicator" descr="Dock Queue Indicator texts" voice="no">
+      <t id="1">Indicateur de file d'amarrage</t>
+      <t id="2">Affiche le nombre de vaisseaux en attente d'un emplacement d'amarrage libre à chacune de vos stations, sous la forme d'une icône colorée dans la liste Propriétés possédées de la carte.</t>
+
+      <!-- Section: Dock queue (90100) -->
+      <t id="90100">File d'attente d'amarrage</t>
+      <t id="90110">Afficher la taille de la file d'attente d'amarrage sur les lignes des stations</t>
+      <t id="90120">Vert jusqu'à \(vaisseaux en attente\)</t>
+      <t id="90121">Jaune jusqu'à \(vaisseaux en attente, rouge au-delà\)</t>
+
+      <!-- Messages (1000+) -->
+      <t id="1000">En attente d'un emplacement libre : %s</t>
+
+      <!-- Section: Debug (90900) -->
+      <t id="90900">Débogage</t>
+      <t id="90910">Niveau de débogage</t>
+      <t id="90911">Aucun</t>
+      <t id="90912">Débogage</t>
+      <t id="90913">Trace</t>
+    </page>
+  </add>
+</diff>

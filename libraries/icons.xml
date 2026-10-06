@@ -1,0 +1,4 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<icons>
+  <icon name="dqi_dockqueue" texture="extensions\dock_queue_indicator\assets\textures\ui\dock_queue_indicator\dqi_dockqueue.tga" height="128" width="128"></icon>
+</icons>

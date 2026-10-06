@@ -1,0 +1,151 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="Dock_Queue_Indicator_Options" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+
+  <cues>
+    <cue name="Init" instantiate="false" version="100">
+      <cues>
+
+        <cue name="Register_Menu" instantiate="true" version="100">
+          <conditions>
+            <event_cue_signalled cue="md.Simple_Menu_API.Reloaded" />
+          </conditions>
+          <actions>
+            <signal_cue_instantly cue="md.Simple_Menu_API.Register_Options_Menu"
+              param="table[
+                $id      = 'dock_queue_indicator_options',
+                $columns = 12,
+                $title   = {1972092443, 1},
+                $onOpen  = Options_Menu,
+              ]" />
+          </actions>
+        </cue>
+
+        <cue name="Options_Menu" instantiate="true" version="100">
+          <conditions>
+            <event_cue_signalled />
+          </conditions>
+          <actions>
+            <do_if value="@player.entity.$DockQueueIndicatorConfig != null">
+              <set_value name="$cfg" exact="player.entity.$DockQueueIndicatorConfig" />
+
+              <run_actions ref="md.Options_Helper.Add_Title_Row">
+                <param name="title" value="{1972092443, 90100}" />
+              </run_actions>
+
+              <run_actions ref="md.Options_Helper.Add_Checkbox">
+                <param name="id" value="'enabled'" />
+                <param name="col" value="1" />
+                <param name="textColSpan" value="11" />
+                <param name="text" value="{1972092443, 90110}" />
+                <param name="data" value="$cfg" />
+                <param name="handle" value="Handle_Checkbox_Changed" />
+              </run_actions>
+
+              <run_actions ref="md.Options_Helper.Add_Slider">
+                <param name="id" value="'greenMax'" />
+                <param name="text" value="{1972092443, 90120}" />
+                <param name="textColSpan" value="6" />
+                <param name="colSpan" value="6" />
+                <param name="min" value="0" />
+                <param name="max" value="20" />
+                <param name="step" value="1" />
+                <param name="data" value="$cfg" />
+                <param name="handle" value="Handle_Slider_Changed" />
+              </run_actions>
+
+              <run_actions ref="md.Options_Helper.Add_Slider">
+                <param name="id" value="'yellowMax'" />
+                <param name="text" value="{1972092443, 90121}" />
+                <param name="textColSpan" value="6" />
+                <param name="colSpan" value="6" />
+                <param name="min" value="0" />
+                <param name="max" value="50" />
+                <param name="step" value="1" />
+                <param name="data" value="$cfg" />
+                <param name="handle" value="Handle_Slider_Changed" />
+              </run_actions>
+
+              <run_actions ref="md.Options_Helper.Add_Title_Row">
+                <param name="title" value="{1972092443, 90900}" />
+              </run_actions>
+
+              <set_value name="$debugLevelOptions" exact="[
+                table[$text = {1972092443, 90911}, $value = 'none'],
+                table[$text = {1972092443, 90912}, $value = 'debug'],
+                table[$text = {1972092443, 90913}, $value = 'trace']
+              ]" />
+              <set_value name="$debugLevelIndexes" exact="['none', 'debug', 'trace']" />
+              <set_value name="$debugLevelCurrentIndex" exact="$debugLevelIndexes.indexof.{@$cfg.$debugLevel}" />
+              <do_if value="$debugLevelCurrentIndex == 0">
+                <set_value name="$debugLevelCurrentIndex" exact="1" />
+              </do_if>
+
+              <run_actions ref="md.Options_Helper.Add_Dropdown">
+                <param name="id" value="'debugLevel'" />
+                <param name="options" value="$debugLevelOptions" />
+                <param name="currentIndex" value="$debugLevelCurrentIndex" />
+                <param name="col" value="1" />
+                <param name="textColSpan" value="6" />
+                <param name="text" value="{1972092443, 90910}" />
+                <param name="dropdownColSpan" value="6" />
+                <param name="handle" value="Handle_Dropdown_Changed" />
+              </run_actions>
+
+              <remove_value name="$debugLevelOptions" />
+              <remove_value name="$debugLevelIndexes" />
+              <remove_value name="$debugLevelCurrentIndex" />
+              <remove_value name="$cfg" />
+            </do_if>
+          </actions>
+        </cue>
+
+        <cue name="Handle_Dropdown_Changed" instantiate="true" version="100">
+          <conditions>
+            <event_cue_signalled />
+          </conditions>
+          <actions>
+            <set_value name="$resultTable" exact="player.entity.$DockQueueIndicatorConfig" />
+            <include_actions ref="md.Options_Helper.Process_Dropdown_Changed" />
+            <remove_value name="$resultTable" />
+            <raise_lua_event name="'DockQueueIndicator.ConfigChanged'" />
+            <include_actions ref="md.Dock_Queue_Indicator.ReadDebugChances" />
+            <debug_text text="'DQI: Options: %s set to %s'.[event.param.$echo.$valueId, @event.param.$option.$value]" chance="$debugChance" />
+            <include_actions ref="md.Dock_Queue_Indicator.ClearDebugChances" />
+          </actions>
+        </cue>
+
+        <cue name="Handle_Checkbox_Changed" instantiate="true" version="100">
+          <conditions>
+            <event_cue_signalled />
+          </conditions>
+          <actions>
+            <set_value name="$resultTable" exact="player.entity.$DockQueueIndicatorConfig" />
+            <include_actions ref="md.Options_Helper.Process_Checkbox_Changed" />
+            <remove_value name="$resultTable" />
+            <raise_lua_event name="'DockQueueIndicator.ConfigChanged'" />
+            <include_actions ref="md.Dock_Queue_Indicator.ReadDebugChances" />
+            <debug_text text="'DQI: Options: %s set to %s'.[event.param.$echo.$valueId, event.param.$checked]" chance="$debugChance" />
+            <include_actions ref="md.Dock_Queue_Indicator.ClearDebugChances" />
+          </actions>
+        </cue>
+
+        <cue name="Handle_Slider_Changed" instantiate="true" version="100">
+          <conditions>
+            <event_cue_signalled />
+          </conditions>
+          <actions>
+            <set_value name="$resultTable" exact="player.entity.$DockQueueIndicatorConfig" />
+            <include_actions ref="md.Options_Helper.Process_Slider_Changed" />
+            <remove_value name="$resultTable" />
+            <raise_lua_event name="'DockQueueIndicator.ConfigChanged'" />
+            <include_actions ref="md.Dock_Queue_Indicator.ReadDebugChances" />
+            <debug_text text="'DQI: Options: %s set to %s'.[event.param.$echo.$valueId, event.param.$value]" chance="$debugChance" />
+            <include_actions ref="md.Dock_Queue_Indicator.ClearDebugChances" />
+          </actions>
+        </cue>
+
+      </cues>
+    </cue>
+  </cues>
+
+</mdscript>

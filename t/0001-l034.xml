@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Spanish -->
+<diff>
+  <add sel="/language">
+    <page id="1972092443" title="Dock Queue Indicator" descr="Dock Queue Indicator texts" voice="no">
+      <t id="1">Indicador de cola de atraque</t>
+      <t id="2">Muestra cuántas naves esperan un muelle libre en cada una de tus estaciones, como un icono de color en la lista Propiedad Adquirida del mapa.</t>
+
+      <!-- Section: Dock queue (90100) -->
+      <t id="90100">Cola de atraque</t>
+      <t id="90110">Mostrar el tamaño de la cola de atraque en las filas de estaciones</t>
+      <t id="90120">Verde hasta \(naves en espera\)</t>
+      <t id="90121">Amarillo hasta \(naves en espera, rojo por encima\)</t>
+
+      <!-- Messages (1000+) -->
+      <t id="1000">A la espera de un muelle libre: %s</t>
+
+      <!-- Section: Debug (90900) -->
+      <t id="90900">Depuración</t>
+      <t id="90910">Nivel de depuración</t>
+      <t id="90911">Ninguno</t>
+      <t id="90912">Depuración</t>
+      <t id="90913">Rastreo</t>
+    </page>
+  </add>
+</diff>

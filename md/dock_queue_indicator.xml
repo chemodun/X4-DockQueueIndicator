@@ -1,0 +1,276 @@
+<?xml version="1.0" encoding="utf-8"?>
+<mdscript name="Dock_Queue_Indicator" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:noNamespaceSchemaLocation="md.xsd">
+
+  <cues>
+    <!-- Child cues inherit this namespace, so the groups and tables below are shared by every listener instance. -->
+    <cue name="Main" version="101">
+      <actions>
+        <include_actions ref="Defaults" />
+        <do_if value="@player.entity.$DockQueueIndicatorConfig == null">
+          <set_value name="player.entity.$DockQueueIndicatorConfig" exact="$cfg" />
+        </do_if>
+        <do_else>
+          <do_for_each name="$key" in="$cfg">
+            <do_if value="@player.entity.$DockQueueIndicatorConfig.{$key} == null">
+              <set_value name="player.entity.$DockQueueIndicatorConfig.{$key}" exact="$cfg.{$key}" />
+            </do_if>
+          </do_for_each>
+        </do_else>
+        <remove_value name="$cfg" />
+
+        <create_group groupname="$stations" />
+        <create_group groupname="$ships" />
+        <create_group groupname="$waiting" />
+        <set_value name="$sectors" exact="table[]" />
+        <set_value name="$queued" exact="table[]" />
+        <set_value name="player.entity.$DockQueueCounts" exact="table[]" />
+        <include_actions ref="RefreshStations" />
+        <include_actions ref="RefreshShips" />
+
+        <include_actions ref="ReadDebugChances" />
+        <debug_text text="'DQI: Init, %s stations, %s ships watched'.[$stations.count, $ships.count]" chance="$debugChance" />
+        <include_actions ref="ClearDebugChances" />
+      </actions>
+      <!-- Listeners of a completed Main fail their group conditions until the groups exist and they are re-armed. -->
+      <patch sinceversion="101">
+        <create_group groupname="$ships" />
+        <create_group groupname="$waiting" />
+        <set_value name="$sectors" exact="table[]" />
+        <set_value name="$queued" exact="table[]" />
+        <do_if value="$candidates?">
+          <remove_value name="$candidates" />
+        </do_if>
+        <do_if value="$shipStation?">
+          <remove_value name="$shipStation" />
+        </do_if>
+        <include_actions ref="RefreshStations" />
+        <include_actions ref="RefreshShips" />
+        <include_actions ref="Recount" />
+        <reset_cue cue="OnQueued" />
+        <reset_cue cue="OnLeftQueue" />
+        <reset_cue cue="OnDockedAt" />
+      </patch>
+
+      <cues>
+
+        <!-- $debugChance for one line per action, $traceChance for per-item detail. Callers include ClearDebugChances when done. -->
+        <library name="ReadDebugChances" purpose="include_actions" version="100">
+          <actions>
+            <set_value name="$dqiDebugLevel" exact="if @player.entity.$DockQueueIndicatorConfig.$debugLevel != null then player.entity.$DockQueueIndicatorConfig.$debugLevel else 'none'" />
+            <set_value name="$debugChance" exact="if @$dqiDebugLevel == null or @$dqiDebugLevel == 'none' then 0 else 100" />
+            <set_value name="$traceChance" exact="if @$dqiDebugLevel == 'trace' then 100 else 0" />
+            <remove_value name="$dqiDebugLevel" />
+          </actions>
+        </library>
+
+        <library name="ClearDebugChances" purpose="include_actions" version="100">
+          <actions>
+            <remove_value name="$debugChance" />
+            <remove_value name="$traceChance" />
+          </actions>
+        </library>
+
+        <library name="Defaults" purpose="include_actions" version="100">
+          <actions>
+            <set_value name="$cfg" exact="table[
+              $debugLevel = 'none',
+              $enabled = true,
+              $greenMax = 2,
+              $yellowMax = 5,
+            ]" />
+          </actions>
+        </library>
+
+        <library name="RefreshStations" purpose="include_actions" version="100">
+          <actions>
+            <find_station name="$found" space="player.galaxy" owner="faction.player" multiple="true" />
+            <add_to_group groupname="$stations" list="$found" replace="true" check="false" />
+            <set_value name="$sectors" exact="table[]" />
+            <do_for_each name="$s" in="$found">
+              <set_value name="$sectors.{$s.sector}" exact="true" />
+            </do_for_each>
+            <remove_value name="$found" />
+            <remove_value name="$s" />
+          </actions>
+        </library>
+
+        <!-- The queued event is ship-side only and names no container, so every ship is a listener candidate. -->
+        <library name="RefreshShips" purpose="include_actions" version="100">
+          <actions>
+            <find_ship name="$found" space="player.galaxy" multiple="true" />
+            <add_to_group groupname="$ships" list="$found" replace="true" check="false" />
+            <remove_value name="$found" />
+          </actions>
+        </library>
+
+        <!-- Which player station a queued ship waits for: its dock order, its trade partner, else the nearest one. Expects $ship, yields $station. -->
+        <library name="ResolveStation" purpose="include_actions" version="100">
+          <actions>
+            <set_value name="$station" exact="null" />
+            <set_value name="$dest" exact="@$ship.order.$destination" />
+            <do_if value="@$dest.isclass.station and $dest.isplayerowned">
+              <set_value name="$station" exact="$dest" />
+            </do_if>
+            <do_elseif value="$ship.order.trade?">
+              <set_value name="$dest" exact="@$ship.order.trade.exchangepartner.{$ship}" />
+              <do_if value="@$dest.isclass.station and $dest.isplayerowned">
+                <set_value name="$station" exact="$dest" />
+              </do_if>
+            </do_elseif>
+            <do_if value="not @$station.exists">
+              <find_station name="$dest" space="$ship.sector" owner="faction.player" sortbydistanceto="$ship">
+                <match_distance object="$ship" max="20km" />
+              </find_station>
+              <do_if value="@$dest.exists">
+                <set_value name="$station" exact="$dest" />
+              </do_if>
+            </do_if>
+            <remove_value name="$dest" />
+          </actions>
+        </library>
+
+        <!-- Rebuilds the per-station counts the Lua side reads, keyed by station idcode. -->
+        <library name="Recount" purpose="include_actions" version="100">
+          <actions>
+            <set_value name="$counts" exact="table[]" />
+            <set_value name="$names" exact="table[]" />
+            <do_for_each name="$qShip" valuename="$qEntry" in="$queued">
+              <do_if value="@$qEntry.$station.exists and $qShip.exists">
+                <set_value name="$qKey" exact="'$' + $qEntry.$station.idcode" />
+                <set_value name="$counts.{$qKey}" exact="@$counts.{$qKey} + 1" />
+                <do_if value="not $names.{$qKey}?">
+                  <set_value name="$names.{$qKey}" exact="[]" />
+                </do_if>
+                <append_to_list name="$names.{$qKey}" exact="$qShip.knownname + ' (' + $qShip.idcode + ')'" />
+              </do_if>
+            </do_for_each>
+            <set_value name="player.entity.$DockQueueCounts" exact="$counts" />
+            <set_value name="player.entity.$DockQueueShips" exact="$names" />
+            <remove_value name="$counts" />
+            <remove_value name="$names" />
+            <remove_value name="$qKey" />
+          </actions>
+        </library>
+
+        <!-- Drops a ship from the queue; expects $ship. -->
+        <library name="Forget" purpose="include_actions" version="100">
+          <actions>
+            <do_if value="$queued.{$ship}?">
+              <remove_value name="$queued.{$ship}" />
+              <include_actions ref="Recount" />
+            </do_if>
+            <do_if value="$ship.exists">
+              <remove_from_group group="$waiting" object="$ship" />
+            </do_if>
+          </actions>
+        </library>
+
+        <cue name="OnQueued" instantiate="true" version="100">
+          <conditions>
+            <event_object_docking_queued group="$ships" />
+          </conditions>
+          <actions>
+            <set_value name="$ship" exact="event.object" />
+            <do_if value="$sectors.{$ship.sector}?">
+              <include_actions ref="ResolveStation" />
+              <include_actions ref="ReadDebugChances" />
+              <!-- order.dock re-requests every 10 s while waiting, so the same ship queues again and again. -->
+              <do_if value="@$station.exists and (not $queued.{$ship}? or $queued.{$ship}.$station != $station)">
+                <set_value name="$queued.{$ship}" exact="table[$station = $station, $since = player.age]" />
+                <add_to_group groupname="$waiting" object="$ship" check="false" />
+                <include_actions ref="Recount" />
+                <debug_text text="'DQI: %s queued for a dock at %s, now %s waiting there'.[$ship.debugname, $station.debugname, player.entity.$DockQueueCounts.{'$' + $station.idcode}]" chance="$debugChance" />
+              </do_if>
+              <do_elseif value="@$station.exists">
+                <debug_text text="'DQI: %s still queued at %s'.[$ship.debugname, $station.debugname]" chance="$traceChance" />
+              </do_elseif>
+              <do_else>
+                <debug_text text="'DQI: %s queued for a dock, no player station resolved, order %s, param %s'.[$ship.debugname, @$ship.order.id, @event.param]" chance="$traceChance" />
+              </do_else>
+              <include_actions ref="ClearDebugChances" />
+              <remove_value name="$station" />
+            </do_if>
+            <remove_value name="$ship" />
+          </actions>
+        </cue>
+
+        <cue name="OnLeftQueue" instantiate="true" version="100">
+          <conditions>
+            <check_any>
+              <event_object_dock_assigned group="$waiting" />
+              <event_object_docking_aborted group="$waiting" />
+              <event_object_docking_denied group="$waiting" />
+              <event_object_destroyed group="$waiting" />
+            </check_any>
+          </conditions>
+          <actions>
+            <set_value name="$ship" exact="event.object" />
+            <set_value name="$station" exact="@$queued.{$ship}.$station" />
+            <include_actions ref="Forget" />
+            <include_actions ref="ReadDebugChances" />
+            <debug_text text="'DQI: %s left the queue at %s, %s, now %s waiting there'.[$ship.debugname, @$station.debugname, event.name, if @player.entity.$DockQueueCounts.{'$' + @$station.idcode} then player.entity.$DockQueueCounts.{'$' + @$station.idcode} else 0]" chance="$debugChance" />
+            <include_actions ref="ClearDebugChances" />
+            <remove_value name="$station" />
+            <remove_value name="$ship" />
+          </actions>
+        </cue>
+
+        <cue name="OnDockedAt" instantiate="true" version="100">
+          <conditions>
+            <event_object_docked_at group="$stations" />
+          </conditions>
+          <actions>
+            <set_value name="$ship" exact="event.param" />
+            <do_if value="$queued.{$ship}?">
+              <include_actions ref="Forget" />
+              <include_actions ref="ReadDebugChances" />
+              <debug_text text="'DQI: %s docked at %s while still counted as waiting'.[$ship.debugname, event.object.debugname]" chance="$debugChance" />
+              <include_actions ref="ClearDebugChances" />
+            </do_if>
+            <remove_value name="$ship" />
+          </actions>
+        </cue>
+
+        <!-- Safety net for ships that leave the queue without an event: stale, docked, assigned or gone. -->
+        <cue name="Sweep" version="100">
+          <delay exact="60s" />
+          <actions>
+            <include_actions ref="RefreshStations" />
+            <include_actions ref="RefreshShips" />
+            <set_value name="$drop" exact="[]" />
+            <do_for_each name="$ship" valuename="$entry" in="$queued">
+              <do_if value="not $ship.exists or not @$entry.$station.isplayerowned">
+                <append_to_list name="$drop" exact="$ship" />
+              </do_if>
+              <do_elseif value="@$ship.dock.exists or @$ship.assigneddock.exists">
+                <append_to_list name="$drop" exact="$ship" />
+              </do_elseif>
+              <do_elseif value="player.age - $entry.$since gt 15min">
+                <append_to_list name="$drop" exact="$ship" />
+              </do_elseif>
+              <do_elseif value="$ship.sector != $entry.$station.sector">
+                <append_to_list name="$drop" exact="$ship" />
+              </do_elseif>
+              <do_elseif value="$ship.distanceto.{$entry.$station} gt 40km">
+                <append_to_list name="$drop" exact="$ship" />
+              </do_elseif>
+            </do_for_each>
+            <include_actions ref="ReadDebugChances" />
+            <do_for_each name="$ship" in="$drop">
+              <debug_text text="'DQI: sweep drops %s'.[@$ship.debugname]" chance="$debugChance" />
+              <include_actions ref="Forget" />
+            </do_for_each>
+            <debug_text text="'DQI: sweep, %s stations, %s ships, %s queued'.[$stations.count, $ships.count, $queued.keys.count]" chance="$traceChance" />
+            <include_actions ref="ClearDebugChances" />
+            <remove_value name="$drop" />
+            <remove_value name="$ship" />
+            <remove_value name="$entry" />
+            <reset_cue cue="this" />
+          </actions>
+        </cue>
+
+      </cues>
+    </cue>
+  </cues>
+
+</mdscript>

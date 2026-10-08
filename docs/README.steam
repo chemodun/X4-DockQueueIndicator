@@ -8,6 +8,7 @@ Shows how many ships are waiting for a free dock at each of your stations, right
 [*] The number is green, yellow or red depending on the queue size; both thresholds are set in Extension Options.
 [*] Hovering over the icon lists the waiting ships by name.
 [*] Counts every ship that was put into the station's docking queue, your own and NPC traders alike, and drops it again as soon as it gets a dock, docks, gives up or is destroyed.
+[*] Ships queuing for a carrier or for a station's build storage are not counted at a nearby station.
 [*] Can be switched off in Extension Options without removing the mod.
 [/list]
 [h2][b]Limitations[/b][/h2]
@@ -82,6 +83,14 @@ In Extension Options, under Dock Queue Indicator:
 [/list]
 [h2][b]Changelog[/b][/h2]
 
+[h2][1.01] - 2026-10-09[/h2]
+[list]
+[*] Fixed
+[list]
+[*] Ships docking at a carrier were counted at a nearby station
+[*] Ships delivering to a build storage were counted at its station
+[/list]
+[/list]
 [h2][1.00] - 2026-10-06[/h2]
 [list]
 [*] Added

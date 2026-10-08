@@ -103,28 +103,34 @@
           </actions>
         </library>
 
-        <!-- Which player station a queued ship waits for: its dock order, its trade partner, else the nearest one. Expects $ship, yields $station. -->
-        <library name="ResolveStation" purpose="include_actions" version="100">
+        <!-- Which player station a queued ship waits for: its order's dock target or trade partner, its station commander, else the nearest one. Expects $ship, yields $station. -->
+        <library name="ResolveStation" purpose="include_actions" version="101">
           <actions>
             <set_value name="$station" exact="null" />
             <set_value name="$dest" exact="@$ship.order.$destination" />
-            <do_if value="@$dest.isclass.station and $dest.isplayerowned">
-              <set_value name="$station" exact="$dest" />
-            </do_if>
-            <do_elseif value="$ship.order.trade?">
+            <do_if value="not @$dest.isclass.container and $ship.order.trade?">
               <set_value name="$dest" exact="@$ship.order.trade.exchangepartner.{$ship}" />
-              <do_if value="@$dest.isclass.station and $dest.isplayerowned">
+            </do_if>
+            <!-- A known container target (a carrier or build storage too) is final: no guessing. -->
+            <do_if value="@$dest.isclass.container">
+              <do_if value="$dest.isclass.station and $dest.isplayerowned">
                 <set_value name="$station" exact="$dest" />
               </do_if>
+            </do_if>
+            <do_elseif value="@$ship.commander.isclass.station and $ship.commander.sector == $ship.sector">
+              <do_if value="$ship.commander.isplayerowned">
+                <set_value name="$station" exact="$ship.commander" />
+              </do_if>
             </do_elseif>
-            <do_if value="not @$station.exists">
+            <!-- Units and ship-commanded wings dock at their commander. -->
+            <do_elseif value="not $ship.isunit and not @$ship.commander.isclass.ship">
               <find_station name="$dest" space="$ship.sector" owner="faction.player" sortbydistanceto="$ship">
                 <match_distance object="$ship" max="20km" />
               </find_station>
               <do_if value="@$dest.exists">
                 <set_value name="$station" exact="$dest" />
               </do_if>
-            </do_if>
+            </do_elseif>
             <remove_value name="$dest" />
           </actions>
         </library>
@@ -165,7 +171,7 @@
           </actions>
         </library>
 
-        <cue name="OnQueued" instantiate="true" version="100">
+        <cue name="OnQueued" instantiate="true" version="101">
           <conditions>
             <event_object_docking_queued group="$ships" />
           </conditions>
@@ -185,7 +191,8 @@
                 <debug_text text="'DQI: %s still queued at %s'.[$ship.debugname, $station.debugname]" chance="$traceChance" />
               </do_elseif>
               <do_else>
-                <debug_text text="'DQI: %s queued for a dock, no player station resolved, order %s, param %s'.[$ship.debugname, @$ship.order.id, @event.param]" chance="$traceChance" />
+                <debug_text text="'DQI: %s queued for a dock, no player station resolved, order %s, destination %s, commander %s'.[$ship.debugname, @$ship.order.id, @$ship.order.$destination.debugname, @$ship.commander.debugname]" chance="$traceChance" />
+                <include_actions ref="Forget" />
               </do_else>
               <include_actions ref="ClearDebugChances" />
               <remove_value name="$station" />
